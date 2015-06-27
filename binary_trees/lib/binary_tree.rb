@@ -58,4 +58,23 @@ def breadth_search(root, n, queue = [])
 end
 
 
-
+def depth_search(tree, n)
+  @stack = [tree]
+  @visited = [tree]
+  @result = 0
+  while @result == 0
+    node = @stack.last
+    if node.nil? || node.value == n
+      @result = node
+    elsif !@visited.include?(node.left) && !node.left.nil?
+      @stack << node.left
+      @visited << node.left
+    elsif !@visited.include?(node.right) && !node.right.nil?
+      @stack << node.right
+      @visited << node.right
+    else
+      @stack.pop
+    end
+  end
+  @result
+end
