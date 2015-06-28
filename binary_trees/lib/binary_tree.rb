@@ -78,3 +78,13 @@ def depth_search(tree, n)
   end
   @result
 end
+
+def dfs_rec(node, n)
+  if node.nil?
+    nil
+  elsif node.value == n
+    node
+  else
+    dfs_rec(node.left, n).nil? ? dfs_rec(node.right, n) : dfs_rec(node.left, n)
+  end
+end
