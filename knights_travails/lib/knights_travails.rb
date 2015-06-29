@@ -1,26 +1,3 @@
-
-class Knight
-  attr_accessor :current_position, :possible_moves
-
-  def initialize(current_position)
-    raise ArgumentError, 'Argument is not valid' unless all_possible_positions.include?(current_position)
-    @current_position = current_position
-    @possible_moves = possible_movements(@current_position)
-  end
-
-end
-
-# returns ana array with all the possivle positions
-def all_possible_positions
-  result = []
-  (1..8).each do |x|
-    (1..8).each do |y|
-      result << [x, y]
-    end
-  end
-  result
-end
-
 # returns an array with the possible positions the knight could move to
 def possible_movements(current_position)
   result = []
@@ -34,23 +11,27 @@ def possible_movements(current_position)
   result
 end
 
-def knight_moves(position, final, queue = [], track = [])
-  track << position
-  if position == final
-    track
-  else
-    a = possible_movements(position).find do |move|
-      move == final
-    end
-    if a
-      track << a
-      track
+# returns the fastest path a knight can do from 'position' to 'final'
+def knight_moves(position, final)
+  position == final ? result = [final] : result = 0
+  position = [position]
+  queue = []
+  while result == 0
+    pm = possible_movements(position.last)
+    if pm.include?(final)
+      result = position << final
     else
-      possible_movements(position).each do |move|
-        queue << move
+      pm.each do |move|
+        queue << (position + [move])
       end
-      next_ = queue.delete_at(0)
-      knight_moves(next_, final, queue, track)
+      position = queue.delete_at(0)
     end
   end
+  pretty_result(result)
+end
+
+# puts a user-friendly result
+def pretty_result(result)
+  puts "You made it in #{result.length - 1} moves! Here is your path:"
+  result.each { |position| puts position.to_s }
 end
